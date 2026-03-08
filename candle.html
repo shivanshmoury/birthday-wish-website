@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Make a Wish 🎂</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+
+  <style>
+    /* Candle-page orbs */
+    .orb-1 {
+      width:490px; height:490px; opacity:.18;
+      background:radial-gradient(circle,#f43f72,transparent);
+      top:-90px; right:-130px; animation-duration:22s;
+    }
+    .orb-2 {
+      width:380px; height:380px; opacity:.15;
+      background:radial-gradient(circle,#9b59b6,transparent);
+      bottom:-90px; left:-80px; animation-duration:16s; animation-delay:-8s;
+    }
+
+    #wishWrap { display:none; }
+    .click-hint {
+      font-size:.76rem; letter-spacing:.15em; text-transform:uppercase;
+      color:rgba(255,255,255,.26); margin-top:6px; margin-bottom:16px;
+    }
+
+    /* ── EXTRA: rotating sparkles around the cake ── */
+    .sparkle-ring {
+      position:absolute; inset:-30px; pointer-events:none;
+      animation:ringRotateSlow 20s linear infinite;
+    }
+    @keyframes ringRotateSlow { to { transform: rotate(360deg); } }
+    .sparkle-dot {
+      position:absolute; width:6px; height:6px; border-radius:50%;
+      background:radial-gradient(circle,#fff,rgba(255,215,0,.7));
+      box-shadow:0 0 8px 2px rgba(255,215,0,.6);
+      animation:sparkleFlash 2s ease-in-out infinite;
+    }
+    @keyframes sparkleFlash { 0%,100%{opacity:.3;transform:scale(.7);} 50%{opacity:1;transform:scale(1.4);} }
+
+    /* ── Cake counter display ── */
+    .candle-counter {
+      font-size:.82rem; letter-spacing:.18em; text-transform:uppercase;
+      color:rgba(255,255,255,.38); margin-bottom:18px;
+    }
+    .candle-counter span { color:var(--rose); font-weight:700; }
+  </style>
+</head>
+<body>
+
+  <div class="bg-mesh"></div>
+  <div class="grain"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <canvas id="heartCanvas"></canvas>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <canvas id="confettiCanvas"></canvas>
+  <div class="transition-overlay"></div>
+
+  <audio id="bgMusic" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg"/>
+  </audio>
+  <div class="music-player">
+    <button class="music-toggle" id="musicToggle" title="Play / Pause Music">♫</button>
+    <span class="music-label">Music</span>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       MAIN
+  ══════════════════════════════════════════════════ -->
+  <main class="page-wrap">
+    <div class="candle-page">
+
+      <p class="eyebrow">✦ &nbsp;close your eyes &amp; wish&nbsp; ✦</p>
+      <h2 class="section-title">Make a Wish &amp; Blow<br/>the Candles 🎂</h2>
+      <p class="subtitle">Click each flame — or press the button below</p>
+
+      <!-- ── CAKE SCENE ── -->
+      <div class="cake-scene">
+
+        <!-- Rotating sparkle ring around cake -->
+        <div class="sparkle-ring" id="sparkleRing"></div>
+
+        <!-- ── CANDLES ─────────────────────────── -->
+        <div class="candles-wrap">
+
+          <!-- Candle 1 — Rose pink -->
+          <div class="candle" id="candle-0">
+            <div class="flame-wrap">
+              <div class="smoke-col">
+                <div class="smoke-puff" style="--drift:5px"></div>
+                <div class="smoke-puff" style="--drift:-8px"></div>
+                <div class="smoke-puff" style="--drift:3px"></div>
+                <div class="smoke-puff" style="--drift:-5px"></div>
+              </div>
+              <div class="flame">
+                <div class="flame-outer"></div>
+                <div class="flame-mid"></div>
+                <div class="flame-tip"></div>
+              </div>
+            </div>
+            <div class="wick"></div>
+            <div class="candle-stick c1"></div>
+          </div>
+
+          <!-- Candle 2 — Lavender -->
+          <div class="candle" id="candle-1">
+            <div class="flame-wrap">
+              <div class="smoke-col">
+                <div class="smoke-puff" style="--drift:-6px"></div>
+                <div class="smoke-puff" style="--drift:9px"></div>
+                <div class="smoke-puff" style="--drift:-4px"></div>
+                <div class="smoke-puff" style="--drift:6px"></div>
+              </div>
+              <div class="flame">
+                <div class="flame-outer"></div>
+                <div class="flame-mid"></div>
+                <div class="flame-tip"></div>
+              </div>
+            </div>
+            <div class="wick"></div>
+            <div class="candle-stick c2"></div>
+          </div>
+
+          <!-- Candle 3 — Gold -->
+          <div class="candle" id="candle-2">
+            <div class="flame-wrap">
+              <div class="smoke-col">
+                <div class="smoke-puff" style="--drift:7px"></div>
+                <div class="smoke-puff" style="--drift:-5px"></div>
+                <div class="smoke-puff" style="--drift:4px"></div>
+                <div class="smoke-puff" style="--drift:-7px"></div>
+              </div>
+              <div class="flame">
+                <div class="flame-outer"></div>
+                <div class="flame-mid"></div>
+                <div class="flame-tip"></div>
+              </div>
+            </div>
+            <div class="wick"></div>
+            <div class="candle-stick c3"></div>
+          </div>
+
+        </div><!-- /candles-wrap -->
+
+        <!-- ── CAKE LAYERS ─────────────────────── -->
+        <!-- Top layer — pink -->
+        <div class="cake-layer cake-top">
+          <div class="drip"></div>
+          <div class="cake-deco"></div>
+          <div class="pearls">
+            <div class="pearl"></div><div class="pearl"></div><div class="pearl"></div>
+            <div class="pearl"></div><div class="pearl"></div><div class="pearl"></div>
+          </div>
+        </div>
+
+        <!-- Middle layer — lavender -->
+        <div class="cake-layer cake-mid">
+          <div class="drip"></div>
+          <div class="cake-deco"></div>
+          <div class="pearls">
+            <div class="pearl"></div><div class="pearl"></div><div class="pearl"></div>
+            <div class="pearl"></div><div class="pearl"></div><div class="pearl"></div>
+            <div class="pearl"></div><div class="pearl"></div>
+          </div>
+        </div>
+
+        <!-- Bottom layer — gold -->
+        <div class="cake-layer cake-bot">
+          <div class="drip"></div>
+          <div class="cake-deco"></div>
+          <div class="pearls">
+            <div class="pearl"></div><div class="pearl"></div><div class="pearl"></div>
+            <div class="pearl"></div><div class="pearl"></div><div class="pearl"></div>
+            <div class="pearl"></div><div class="pearl"></div><div class="pearl"></div>
+          </div>
+        </div>
+
+        <!-- Plate -->
+        <div class="cake-plate"></div>
+
+        <!-- Ambient glow -->
+        <div class="cake-glow"></div>
+
+      </div><!-- /cake-scene -->
+
+      <!-- ── CONTROLS ── -->
+      <div class="blow-controls">
+        <p class="candle-counter">
+          Candles blown: <span id="blownCount">0</span> / 3
+        </p>
+        <p class="click-hint">↑ tap a flame to blow it out individually</p>
+        <button class="btn-glass" id="blowBtn">💨 &nbsp;Blow a Candle</button>
+      </div>
+
+      <!-- ── WISH REVEAL ── -->
+      <div id="wishWrap" class="wish-reveal" style="margin-top:32px;">
+        <p>✨ Your wish has been made, my love ✨</p>
+        <button class="btn-primary" onclick="navigateTo('memories.html')">
+          Open Your Birthday Surprise 💌
+        </button>
+      </div>
+
+    </div><!-- /candle-page -->
+  </main>
+
+  <script src="script.js"></script>
+  <script>
+    /* ── Generate sparkle dots around cake ── */
+    const ring   = document.getElementById('sparkleRing');
+    const dotCnt = 12;
+    for (let i = 0; i < dotCnt; i++) {
+      const dot = document.createElement('div');
+      dot.className = 'sparkle-dot';
+      const angle = (i / dotCnt) * 360;
+      const rad   = 180; // ring radius px
+      const x = 50 + (rad / 2.6) * Math.cos(angle * Math.PI / 180);
+      const y = 50 + (rad / 5.0) * Math.sin(angle * Math.PI / 180);
+      dot.style.cssText = `left:${x}%;top:${y}%;
+        animation-delay:${(i/dotCnt*2).toFixed(2)}s;
+        transform:translate(-50%,-50%);`;
+      ring.appendChild(dot);
+    }
+
+    /* ── Update candle counter on each blow ── */
+    const countEl = document.getElementById('blownCount');
+    document.querySelectorAll('.candle').forEach(c => {
+      c.addEventListener('click', () => {
+        setTimeout(() => {
+          const blown = document.querySelectorAll('.candle.blown').length;
+          if (countEl) countEl.textContent = blown;
+        }, 50);
+      });
+    });
+    document.getElementById('blowBtn').addEventListener('click', () => {
+      setTimeout(() => {
+        const blown = document.querySelectorAll('.candle.blown').length;
+        if (countEl) countEl.textContent = blown;
+      }, 50);
+    });
+  </script>
+</body>
+</html>

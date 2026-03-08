@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Birthday Memories 💌</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+
+  <style>
+    /* ── Memories page — body is the scroll container ── */
+    html, body { height:100%; }
+    body#memoriesBody { overflow-y:auto; }
+
+    /* Orbs */
+    .orb-1 { width:620px;height:620px;opacity:.15;background:radial-gradient(circle,#6c3483,transparent);top:-200px;left:-200px;animation-duration:24s; }
+    .orb-2 { width:520px;height:520px;opacity:.13;background:radial-gradient(circle,#c2185b,transparent);bottom:-180px;right:-180px;animation-duration:18s;animation-delay:-10s; }
+
+    /* Placeholder photo gradients (12 unique) */
+    .pg1  { background:linear-gradient(135deg,#fce4ec,#f48fb1,#e91e63); }
+    .pg2  { background:linear-gradient(135deg,#f3e5f5,#ce93d8,#9c27b0); }
+    .pg3  { background:linear-gradient(135deg,#fff8e1,#ffe082,#ff8f00); }
+    .pg4  { background:linear-gradient(135deg,#e8eaf6,#9fa8da,#3f51b5); }
+    .pg5  { background:linear-gradient(135deg,#fce4ec,#ef9a9a,#e53935); }
+    .pg6  { background:linear-gradient(135deg,#e8f5e9,#a5d6a7,#388e3c); }
+    .pg7  { background:linear-gradient(135deg,#e3f2fd,#90caf9,#1976d2); }
+    .pg8  { background:linear-gradient(135deg,#fff3e0,#ffcc80,#ef6c00); }
+    .pg9  { background:linear-gradient(135deg,#fce4ec,#f48fb1,#ad1457); }
+    .pg10 { background:linear-gradient(135deg,#ede7f6,#b39ddb,#512da8); }
+    .pg11 { background:linear-gradient(135deg,#fff9c4,#fff176,#f9a825); }
+    .pg12 { background:linear-gradient(135deg,#fce4ec,#f06292,#880e4f); }
+
+    /* Carousel slide placeholder backgrounds */
+    .cs1  { background:linear-gradient(135deg,#3d0030,#c2185b); }
+    .cs2  { background:linear-gradient(135deg,#1a0035,#7b1fa2); }
+    .cs3  { background:linear-gradient(135deg,#0d0050,#1565c0); }
+    .cs4  { background:linear-gradient(135deg,#1b0000,#b71c1c); }
+    .cs5  { background:linear-gradient(135deg,#0a1628,#0d47a1); }
+    .cs6  { background:linear-gradient(135deg,#1a0020,#880e4f); }
+
+    /* Page layout: no flex centering, let content flow */
+    .page-wrap { min-height:auto; padding:0; justify-content:flex-start; }
+  </style>
+</head>
+<body id="memoriesBody">
+
+  <div class="bg-mesh"></div>
+  <div class="grain"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <canvas id="heartCanvas"></canvas>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <canvas id="confettiCanvas"></canvas>
+  <div class="transition-overlay"></div>
+
+  <audio id="bgMusic" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg"/>
+  </audio>
+  <div class="music-player">
+    <button class="music-toggle" id="musicToggle" title="Play / Pause Music">♫</button>
+    <span class="music-label">Music</span>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════
+       PAGE CONTENT
+  ══════════════════════════════════════════════════════ -->
+  <main class="page-wrap" style="position:relative;z-index:10;">
+    <div class="memories-page">
+
+      <!-- ── PARALLAX HEADER ── -->
+      <div class="memories-header">
+        <div class="parallax-hero">
+          <p class="eyebrow">✦ &nbsp;written from the heart&nbsp; ✦</p>
+          <h2 class="section-title">Happy Birthday, My Love 💕</h2>
+          <p class="subtitle">Every memory with you is a treasure I hold forever</p>
+          <div class="divider"></div>
+        </div>
+      </div>
+
+      <!-- ═══════════════════════════════════════════
+           PHOTO CAROUSEL (swipeable, auto-plays)
+           ★ To add your own photos:
+             Replace <div class="slide-placeholder cs1">🌹</div>
+             with    <img src="your-photo.jpg" alt="…"/>
+             inside .slide-photo
+      ═══════════════════════════════════════════ -->
+      <div class="carousel-section">
+        <p class="carousel-label">✦ &nbsp;our moments together&nbsp; ✦</p>
+
+        <div class="carousel-outer glass">
+          <!-- Prev / Next arrows -->
+          <button class="carousel-btn carousel-prev" aria-label="Previous slide">&#8592;</button>
+          <button class="carousel-btn carousel-next" aria-label="Next slide">&#8594;</button>
+
+          <!-- Track (scrolls horizontally) -->
+          <div class="carousel-track">
+
+            <!-- Slide 1 -->
+            <div class="carousel-slide">
+              <div class="carousel-slide-inner">
+                <div class="slide-photo">
+                  <!-- ★ Replace with: <img src="photo1.jpg" alt="Memory 1"/> -->
+                  <div class="slide-placeholder cs1">🌹</div>
+                  <div class="slide-overlay"></div>
+                </div>
+                <div class="slide-body">
+                  <p class="slide-msg">
+                    "Happy Birthday to the most beautiful girl in my life.
+                    Every single day with you is a gift I never take for granted." ❤️
+                  </p>
+                  <span class="slide-heart">💖</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 2 -->
+            <div class="carousel-slide">
+              <div class="carousel-slide-inner">
+                <div class="slide-photo">
+                  <div class="slide-placeholder cs2">✨</div>
+                  <div class="slide-overlay"></div>
+                </div>
+                <div class="slide-body">
+                  <p class="slide-msg">
+                    "You make every ordinary moment feel like magic.
+                    The world is so much more beautiful because you are in it." 🌟
+                  </p>
+                  <span class="slide-heart">💕</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 3 -->
+            <div class="carousel-slide">
+              <div class="carousel-slide-inner">
+                <div class="slide-photo">
+                  <div class="slide-placeholder cs3">🦋</div>
+                  <div class="slide-overlay"></div>
+                </div>
+                <div class="slide-body">
+                  <p class="slide-msg">
+                    "I'm so incredibly lucky to have you in my life.
+                    Choosing you, every single day, is the easiest decision I ever make." 🥰
+                  </p>
+                  <span class="slide-heart">💗</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 4 -->
+            <div class="carousel-slide">
+              <div class="carousel-slide-inner">
+                <div class="slide-photo">
+                  <div class="slide-placeholder cs4">💎</div>
+                  <div class="slide-overlay"></div>
+                </div>
+                <div class="slide-body">
+                  <p class="slide-msg">
+                    "Our memories are my most favourite treasure in the whole world.
+                    I replay them on the hard days and they always make me smile." 💎
+                  </p>
+                  <span class="slide-heart">💓</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 5 -->
+            <div class="carousel-slide">
+              <div class="carousel-slide-inner">
+                <div class="slide-photo">
+                  <div class="slide-placeholder cs5">🌙</div>
+                  <div class="slide-overlay"></div>
+                </div>
+                <div class="slide-body">
+                  <p class="slide-msg">
+                    "You are my sunshine in the morning and my favourite star at night.
+                    Thank you for being you, exactly as you are." 🌙
+                  </p>
+                  <span class="slide-heart">💝</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slide 6 -->
+            <div class="carousel-slide">
+              <div class="carousel-slide-inner">
+                <div class="slide-photo">
+                  <div class="slide-placeholder cs6">🎀</div>
+                  <div class="slide-overlay"></div>
+                </div>
+                <div class="slide-body">
+                  <p class="slide-msg">
+                    "Here's to another beautiful year of us — the greatest story ever told.
+                    I love you more with every page we turn together." 📖
+                  </p>
+                  <span class="slide-heart">💞</span>
+                </div>
+              </div>
+            </div>
+
+          </div><!-- /carousel-track -->
+        </div><!-- /carousel-outer -->
+
+        <!-- Dot navigation -->
+        <div class="carousel-dots" role="tablist" aria-label="Carousel slides"></div>
+
+      </div><!-- /carousel-section -->
+
+      <!-- ═══════════════════════════════════════════
+           PARALLAX MEMORY CARDS GRID
+           (each card drifts at a slightly different parallax speed)
+      ═══════════════════════════════════════════ -->
+      <div class="cards-section">
+        <p class="cards-label">✦ &nbsp;more moments from the heart&nbsp; ✦</p>
+
+        <div class="cards-grid">
+
+          <div class="mem-card glass" style="--d:0s">
+            <div class="card-photo pg1"><div class="card-placeholder">🌹</div></div>
+            <div class="card-body">
+              <p>You make every single day brighter just by being in it 🌟</p>
+              <span class="card-heart">💖</span>
+            </div>
+          </div>
+
+          <div class="mem-card glass" style="--d:0.08s">
+            <div class="card-photo pg2"><div class="card-placeholder">🌸</div></div>
+            <div class="card-body">
+              <p>Every laugh we share is a moment I hold close forever 😊</p>
+              <span class="card-heart">💕</span>
+            </div>
+          </div>
+
+          <div class="mem-card glass" style="--d:0.16s">
+            <div class="card-photo pg3"><div class="card-placeholder">🌻</div></div>
+            <div class="card-body">
+              <p>You are my sunshine, my calm, and my greatest adventure 🌈</p>
+              <span class="card-heart">💗</span>
+            </div>
+          </div>
+
+          <div class="mem-card glass" style="--d:0.24s">
+            <div class="card-photo pg4"><div class="card-placeholder">⭐</div></div>
+            <div class="card-body">
+              <p>Loving you is the best thing that ever happened to me 💙</p>
+              <span class="card-heart">💓</span>
+            </div>
+          </div>
+
+          <div class="mem-card glass" style="--d:0.32s">
+            <div class="card-photo pg5"><div class="card-placeholder">🌹</div></div>
+            <div class="card-body">
+              <p>You deserve all the happiness the universe has to offer 🌌</p>
+              <span class="card-heart">💝</span>
+            </div>
+          </div>
+
+          <div class="mem-card glass" style="--d:0.4s">
+            <div class="card-photo pg6"><div class="card-placeholder">🦋</div></div>
+            <div class="card-body">
+              <p>Thank you for choosing me, every single day — I cherish it 🙏</p>
+              <span class="card-heart">💞</span>
+            </div>
+          </div>
+
+          <div class="mem-card glass" style="--d:0.48s">
+            <div class="card-photo pg7"><div class="card-placeholder">🎵</div></div>
+            <div class="card-body">
+              <p>With you, even the most ordinary moment becomes magical ✨</p>
+              <span class="card-heart">❣️</span>
+            </div>
+          </div>
+
+          <div class="mem-card glass" style="--d:0.56s">
+            <div class="card-photo pg8"><div class="card-placeholder">🌙</div></div>
+            <div class="card-body">
+              <p>You are my favourite song, playing on repeat in my heart 🎶</p>
+              <span class="card-heart">💟</span>
+            </div>
+          </div>
+
+          <div class="mem-card glass" style="--d:0.64s">
+            <div class="card-photo pg9"><div class="card-placeholder">🎀</div></div>
+            <div class="card-body">
+              <p>I'm so grateful to share this life with someone as wonderful as you 🥂</p>
+              <span class="card-heart">💘</span>
+            </div>
+          </div>
+
+          <div class="mem-card glass" style="--d:0.72s">
+            <div class="card-photo pg10"><div class="card-placeholder">💫</div></div>
+            <div class="card-body">
+              <p>You've made my world so much warmer, brighter, and more beautiful 🌺</p>
+              <span class="card-heart">🩷</span>
+            </div>
+          </div>
+
+          <div class="mem-card glass" style="--d:0.8s">
+            <div class="card-photo pg11"><div class="card-placeholder">🌟</div></div>
+            <div class="card-body">
+              <p>A thousand lifetimes wouldn't be enough — I'd choose you in every one 🌹</p>
+              <span class="card-heart">💜</span>
+            </div>
+          </div>
+
+          <div class="mem-card glass" style="--d:0.88s">
+            <div class="card-photo pg12"><div class="card-placeholder">🕊️</div></div>
+            <div class="card-body">
+              <p>Here's to forever. To more laughs, more adventures, and more us 💑</p>
+              <span class="card-heart">💌</span>
+            </div>
+          </div>
+
+        </div><!-- /cards-grid -->
+      </div><!-- /cards-section -->
+
+      <!-- ── FOOTER ── -->
+      <div class="mem-footer">
+        <div class="love-note glass">
+          <p>With all my love, forever and always ❤️</p>
+          <span class="sig">— Yours, today and every day 🌹</span>
+        </div>
+      </div>
+
+    </div><!-- /memories-page -->
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>

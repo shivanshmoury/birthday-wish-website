@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>A Special Surprise For You 💕</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="style.css"/>
+
+  <style>
+    /* ── Countdown-page specific orbs ── */
+    .orb-1 {
+      width:520px; height:520px; opacity:.2;
+      background:radial-gradient(circle,#c2185b,transparent);
+      top:-130px; left:-160px; animation-duration:20s;
+    }
+    .orb-2 {
+      width:420px; height:420px; opacity:.18;
+      background:radial-gradient(circle,#6c3483,transparent);
+      bottom:-110px; right:-110px; animation-duration:15s; animation-delay:-6s;
+    }
+
+    #timerWrap   { display:flex; flex-direction:column; align-items:center; }
+    #arrivedWrap { display:none; flex-direction:column; align-items:center; }
+
+    /* Animated tagline typing cursor */
+    .subtitle::after {
+      content: '|';
+      animation: cursor .85s step-end infinite;
+      color: var(--rose); margin-left:2px;
+    }
+    @keyframes cursor { 0%,100%{opacity:1} 50%{opacity:0} }
+  </style>
+</head>
+<body>
+
+  <!-- Background -->
+  <div class="bg-mesh"></div>
+  <div class="grain"></div>
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+
+  <!-- Heart particles canvas -->
+  <canvas id="heartCanvas"></canvas>
+
+  <!-- confetti.js (canvas-confetti) — CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+  <!-- Fallback confetti canvas -->
+  <canvas id="confettiCanvas"></canvas>
+
+  <!-- Page transition overlay -->
+  <div class="transition-overlay"></div>
+
+  <!-- ── MUSIC ── Replace src with your own romantic MP3 -->
+  <audio id="bgMusic" loop>
+    <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg"/>
+  </audio>
+  <div class="music-player">
+    <button class="music-toggle" id="musicToggle" title="Play / Pause Music">♫</button>
+    <span class="music-label">Music</span>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════
+       MAIN
+  ══════════════════════════════════════════════════ -->
+  <main class="page-wrap">
+    <div class="countdown-hero parallax-wrap">
+
+      <p class="eyebrow fade-in" style="animation-delay:.1s">
+        ✦ &nbsp;something magical is coming&nbsp; ✦
+      </p>
+
+      <h1 class="display" style="animation:fadeInUp .8s .28s both">
+        A Special Surprise<br/>
+        <span>For You</span> ❤️
+      </h1>
+
+      <p class="subtitle" style="animation:fadeInUp .8s .44s both">
+        Close your eyes, make a wish, and feel the love…
+      </p>
+
+      <div class="divider" style="animation:fadeInUp .8s .56s both"></div>
+
+      <!-- ── COUNTDOWN TIMER ── -->
+      <div id="timerWrap">
+        <p class="eyebrow" style="margin-bottom:26px;margin-top:0;opacity:.6;">
+          your birthday arrives in
+        </p>
+
+        <div class="timer-wrap">
+          <div class="timer-block glass">
+            <div class="timer-glow-ring"></div>
+            <span class="timer-num" id="days">00</span>
+            <span class="timer-label">Days</span>
+          </div>
+          <span class="timer-sep">:</span>
+          <div class="timer-block glass">
+            <div class="timer-glow-ring"></div>
+            <span class="timer-num" id="hours">00</span>
+            <span class="timer-label">Hours</span>
+          </div>
+          <span class="timer-sep">:</span>
+          <div class="timer-block glass">
+            <div class="timer-glow-ring"></div>
+            <span class="timer-num" id="minutes">00</span>
+            <span class="timer-label">Minutes</span>
+          </div>
+          <span class="timer-sep">:</span>
+          <div class="timer-block glass">
+            <div class="timer-glow-ring"></div>
+            <span class="timer-num" id="seconds">00</span>
+            <span class="timer-label">Seconds</span>
+          </div>
+        </div>
+      </div><!-- /timerWrap -->
+
+      <!-- ── ARRIVED (hidden until zero) ── -->
+      <div id="arrivedWrap">
+        <div class="arrived-card glass">
+          <span class="big-emoji">🎉</span>
+          <h2>It's Your Day, My Love!</h2>
+          <p>
+            The countdown is over — your birthday is finally here.
+            You deserve every bit of joy this day can hold. 🌹
+          </p>
+          <button class="btn-primary" onclick="navigateTo('candle.html')">
+            Let's Celebrate 🎂
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /countdown-hero -->
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
